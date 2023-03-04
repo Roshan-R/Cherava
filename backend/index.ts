@@ -39,7 +39,8 @@ async function getData(url: string, selector: string, _type: DataType): Promise<
 
 const cors = require("cors");
 const express = require("express");
-const app = express(); const port = 3000;
+const app = express();
+const port = Number(process.env.PORT ?? 3000);
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
