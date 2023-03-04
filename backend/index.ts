@@ -57,6 +57,10 @@ app.post("/api", async (req: any, res: any) => {
   res.send(data);
 });
 
+app.get('/', (req: any, res: any) => {
+  res.send("GET request works")
+})
+
 app.post("/getData", async (req: any, res: any) => {
   const id = req.body.id; console.log("Got a reqeust with body: ", req.body);
   db.any('SELECT * FROM Workflows where "user" = $1', id).then(function(data: string) {
