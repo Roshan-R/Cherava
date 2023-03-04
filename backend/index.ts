@@ -1,5 +1,8 @@
 import * as cheerio from 'cheerio';
 
+const pgp = require('pg-promise')();
+const db = pgp(process.env.DB_URL)
+
 enum DataType {
   Text,
   Audio,
@@ -22,6 +25,17 @@ interface Workflow {
   name: string
 }
 
+const w: Workflow = {
+  id: "bdfa0697-9772-4cbf-8a93-367179bb6025",
+  user: "872fd941-af4e-4f8d-8a75-ee25347b1038",
+  data: "6",
+  selector: "#repo-stars-counter-star",
+  cron: "0 * * * *",
+  lastupdated: BigInt("1677927208200"),
+  url: "https://github.com/Roshan-R/termv-rs",
+  name: "Termv Stars"
+}
+
 function api(url: string): Promise<string> {
   return fetch(url).then(response => {
     if (!response.ok) {
@@ -37,16 +51,60 @@ async function getData(url: string, selector: string, _type: DataType): Promise<
   return $(selector).text();
 }
 
+const cron = require('node-cron');
+
+async function saveChangetoDb(w: Workflow, new_data: string) {
+
+  // update workflows set data = 7 where id = 'bdfa0697-9772-4cbf-8a93-367179bb6025'
+
+  db.none('UPDATE Workflows set data = $1, lastupdated = $2 where id = $3', [
+    new_data,
+    Date.now(),
+    w.id,
+  ]).then(() => {
+    console.log("Successfully changed data")
+  }).catch((error: string) => {
+    console.log("Error happedn dude", error)
+  });
+}
+
+
+async function checkChange(w: Workflow) {
+  const site_data = await getData(w.url, w.selector, DataType.Text);
+  try {
+    const d = await db.any('SELECT data FROM Workflows where id = $1', w.id)
+    const db_data = d[0].data;
+
+    if (db_data === site_data) {
+      console.log("they are the same");
+    }
+    else {
+      saveChangetoDb(w, site_data);
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+function setCron(w: Workflow) {
+
+  cron.schedule(w.cron, async () => {
+    await checkChange(w)
+    // console.log('running a task every minute');
+  });
+}
+
 const cors = require("cors");
 const express = require("express");
 const app = express();
 // const port = parseInt(process.env.PORT || "8080");
-const port = 8080;
+const port = 443;
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
-const pgp = require('pg-promise')();
-const db = pgp(process.env.DB_URL)
+
 
 console.log("DB url: ", process.env.DB_URL)
 

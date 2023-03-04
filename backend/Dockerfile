@@ -10,7 +10,7 @@ COPY . /usr/src/app
 RUN bun install
 
 # The port that Bao.js will listen on
-EXPOSE 8080
+EXPOSE 443
 
 # Run the Bao.js webserver
 CMD bun run index.ts
