@@ -41,7 +41,7 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 // const port = parseInt(process.env.PORT || "8080");
-const port = 8080;
+const port = 3000;
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
@@ -66,11 +66,11 @@ app.get('/', (req: any, res: any) => {
 
 app.post("/getData", async (req: any, res: any) => {
   const id = req.body.id; console.log("Got a reqeust with body: ", req.body);
-  db.any('SELECT * FROM Workflows where "user" = $1', id).then(function(data: string) {
+  db.any('SELECT * FROM Workflows where "user" = $1', id).then(function (data: string) {
     console.log(data)
     res.send(data);
     ;
-  }).catch(function(error: string) {
+  }).catch(function (error: string) {
     console.log(error)
   });
 });
