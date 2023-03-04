@@ -1,18 +1,16 @@
-FROM ubuntu:22.04
+# Use the offical Bun image
+FROM jarredsumner/bun:edge
 
-WORKDIR /bun
+# Set the Docker working directory as /usr/src/app
+# Copy everything from here into Docker's /usr/src/app
+WORKDIR /usr/src/app
+COPY . /usr/src/app
 
-RUN apt-get update
-RUN apt-get install curl unzip -y
-RUN curl --fail --location --progress-bar --output "/bun/bun.zip" "https://github.com/oven-sh/bun/releases/download/bun-v0.5.7/bun-linux-x64.zip"
-RUN unzip -d /bun -q -o "/bun/bun.zip"
-RUN mv /bun/bun-linux-x64/bun /usr/local/bin/bun
-RUN chmod 777 /usr/local/bin/bun
+# Install the dependencies (Bao.js)
+RUN bun install
 
-WORKDIR /app
-RUN addgroup --gid 101 --system appuser && adduser --uid 101 --system appuser
-RUN chown -R 101:101 /app && chmod -R g+w /app
-USER appuser
-COPY . ./
+# The port that Bao.js will listen on
+EXPOSE 8080
 
+# Run the Bao.js webserver
 CMD bun run index.ts
