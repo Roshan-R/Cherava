@@ -48,6 +48,8 @@ app.use(cors({ origin: '*' }));
 const pgp = require('pg-promise')();
 const db = pgp(process.env.DB_URL)
 
+console.log("DB url: ", process.env.DB_URL)
+
 app.post("/api", async (req: any, res: any) => {
   console.log("Got a reqeust with body: ", req.body)
   const json: ReqData = req.body;
