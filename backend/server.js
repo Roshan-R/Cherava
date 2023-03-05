@@ -4,8 +4,6 @@ import { sendMail } from './services/mail_service.js';
 
 import { load } from 'cheerio';
 
-import sendMail from './services/mail_service.js'
-
 import pgPromise from 'pg-promise';
 import fetch from 'node-fetch';
 
@@ -49,21 +47,21 @@ async function getData(url, selector, type) {
     return $(selector).text();
 }
 
-async function saveChangetoDb(w, new_data) { 
+async function saveChangetoDb(w, new_data) {
   db.none('UPDATE Workflows set data = $1, lastupdated = $2 where id = $3', [new_data, Date.now(), w.id,]).then(() => {
     console.log("Successfully changed data")
-	  
-	const subject = `Cherava: Content update on workflow -  ${w.name}`
-	const body = `Your workflow ${w.name} had the following update received
+
+    const subject = `Cherava: Content update on workflow -  ${w.name}`
+    const body = `Your workflow ${w.name} had the following update received
  	
   	${w.data}
  	`
 
-	sendMail(subject,body,etheral_user, etheral_pass)
-	  }).catch((error) => {
-	    console.log("Error happedn dude", error)
-	  });
-	}
+    sendMail(subject, body, etheral_user, etheral_pass)
+  }).catch((error) => {
+    console.log("Error happedn dude", error)
+  });
+}
 
 
 async function saveIfChanged(w) {
@@ -83,12 +81,12 @@ async function saveIfChanged(w) {
   }
 }
 
-async function setCronForAll(){
-	try {
+async function setCronForAll() {
+  try {
     const d = await db.any('SELECT * FROM Workflows')
     d.forEach((element, index) => {
-		setCron(element)
-	})
+      setCron(element)
+    })
 
   } catch (error) {
     console.log(error)
@@ -96,21 +94,21 @@ async function setCronForAll(){
 }
 
 function setCron(w) {
-	console.log(w)
-	console.log("setting cron for id: ", w['id'], w['cron'])
-	const task = schedule(w['cron'],  () => {
-	console.log("executing cron job for id: ", w['id'])
-	  saveIfChanged(w).then(
-		  (value) => {
-			console.log(value); // Success!
-		  },
-		  (reason) => {
-			console.error(reason); // Error!
-		  },
-		);
-	// console.log('running a task every minute');
+  console.log(w)
+  console.log("setting cron for id: ", w['id'], w['cron'])
+  const task = schedule(w['cron'], () => {
+    console.log("executing cron job for id: ", w['id'])
+    saveIfChanged(w).then(
+      (value) => {
+        console.log(value); // Success!
+      },
+      (reason) => {
+        console.error(reason); // Error!
+      },
+    );
+    // console.log('running a task every minute');
   });
-	task.start();
+  task.start();
 }
 
 import cors from "cors";
@@ -166,7 +164,7 @@ app.post("/saveData", async (req, res) => {
     const data = {
       worked: true
     }
-	setCron(json);
+    setCron(json);
     res.send(data);
   }).catch((error) => {
     const data = {
