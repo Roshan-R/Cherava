@@ -1,5 +1,5 @@
 "use strict";
-import {createTransport} from "nodemailer";
+import { createTransport } from "nodemailer";
 
 async function sendMail(email, subject, body) {
 
@@ -15,13 +15,13 @@ async function sendMail(email, subject, body) {
         from: process.env.EMAIL, // sender address
         to: email, // list of receivers
         subject: subject, // Subject line
-        text: body
+        // text: body
         // plain text body
-        // html: "<b>Hello world?</b>", // html body
+        html: `<div>${body}</div>`, // html body
     });
 
-    return(info.messageId);
+    return (info.messageId);
 
 }
 
-export default sendMail;
+export { sendMail };

@@ -1,6 +1,6 @@
 async function getDbDataFromDataId(id) {
 
-  const res = await fetch("https://cherava.roshanr3.repl.co/getData", {
+  const res = await fetch(`${import.meta.env.VITE_BACKEND}/api/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
