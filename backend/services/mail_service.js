@@ -1,13 +1,13 @@
 "use strict";
-import { createTransport } from "nodemailer";
+import {createTransport} from "nodemailer";
 
-async function sendMail(email, subject, body) {
+async function sendMail(subject, body, user, pass) {
 
     let transporter = createTransport({
         service: "hotmail",
         auth: {
-            user: process.env.EMAIL, // generated ethereal user
-            pass: process.env.PASS, // generated ethereal password
+            user: user, // generated ethereal user
+            pass: pass, // generated ethereal password
         }
     });
 
@@ -15,13 +15,14 @@ async function sendMail(email, subject, body) {
         from: process.env.EMAIL, // sender address
         to: email, // list of receivers
         subject: subject, // Subject line
-        // text: body
-        // plain text body
-        html: `<div>${body}</div>`, // html body
+        text: "Here are the changes",
+        html: `<div> <br/> ${body} <div/>`
     });
 
-    return (info.messageId);
+    return(info.messageId);
 
 }
 
-export { sendMail };
+export {
+    sendMail
+};

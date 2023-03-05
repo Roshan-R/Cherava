@@ -4,27 +4,34 @@ import { sendMail } from './services/mail_service.js';
 
 import { load } from 'cheerio';
 
+import sendMail from './services/mail_service.js'
+
 import pgPromise from 'pg-promise';
 import fetch from 'node-fetch';
 
 const pgp = pgPromise({ /* Initialization Options */
 });
-
 const db = pgp(process.env.DB_URL)
+
+import { schedule } from 'node-cron';
+const etheral_user = process.env.ETHERAL_USER;
+const etheral_pass = process.env.ETHERAL_PASS;
+
+console.log("Etheral: ", etheral_user, etheral_pass)
 
 const w = {
   id: "bdfa0697-9772-4cbf-8a93-367179bb6025",
   user: "872fd941-af4e-4f8d-8a75-ee25347b1038",
   data: "6",
   selector: "#repo-stars-counter-star",
-  cron: "0 * * * *",
+  cron: "* * * * *",
   lastupdated: BigInt("1677927208200"),
   url: "https://github.com/Roshan-R/termv-rs",
   name: "Termv Stars"
 }
 
 function api(url) {
-  console.log("Url : ", url)
+  console.log("Url: ", url)
   return fetch(url).then(response => {
     if (!response.ok) {
       throw new Error(response.statusText)
@@ -42,26 +49,31 @@ async function getData(url, selector, type) {
     return $(selector).text();
 }
 
-import { schedule } from 'node-cron';
-
-async function saveChangetoDb(w, new_data) { // update workflows set data = 7 where id = 'bdfa0697-9772-4cbf-8a93-367179bb6025'
-
+async function saveChangetoDb(w, new_data) { 
   db.none('UPDATE Workflows set data = $1, lastupdated = $2 where id = $3', [new_data, Date.now(), w.id,]).then(() => {
     console.log("Successfully changed data")
-  }).catch((error) => {
-    console.log("Error happedn dude", error)
-  });
-}
+	  
+	const subject = `Cherava: Content update on workflow -  ${w.name}`
+	const body = `Your workflow ${w.name} had the following update received
+ 	
+  	${w.data}
+ 	`
+
+	sendMail(subject,body,etheral_user, etheral_pass)
+	  }).catch((error) => {
+	    console.log("Error happedn dude", error)
+	  });
+	}
 
 
-async function checkChange(w) {
+async function saveIfChanged(w) {
   const site_data = await getData(w.url, w.selector, "text");
   try {
     const d = await db.any('SELECT data FROM Workflows where id = $1', w.id)
     const db_data = d[0].data;
 
     if (db_data === site_data) {
-      console.log("they are the same");
+      console.log("No change");
     } else {
       saveChangetoDb(w, site_data);
     }
@@ -71,13 +83,34 @@ async function checkChange(w) {
   }
 }
 
+async function setCronForAll(){
+	try {
+    const d = await db.any('SELECT * FROM Workflows')
+    d.forEach((element, index) => {
+		setCron(element)
+	})
+
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 function setCron(w) {
-
-  schedule(w.cron, async () => {
-    await checkChange(w)
-    // console.log('running a task every minute');
+	console.log(w)
+	console.log("setting cron for id: ", w['id'], w['cron'])
+	const task = schedule(w['cron'],  () => {
+	console.log("executing cron job for id: ", w['id'])
+	  saveIfChanged(w).then(
+		  (value) => {
+			console.log(value); // Success!
+		  },
+		  (reason) => {
+			console.error(reason); // Error!
+		  },
+		);
+	// console.log('running a task every minute');
   });
+	task.start();
 }
 
 import cors from "cors";
@@ -133,6 +166,7 @@ app.post("/saveData", async (req, res) => {
     const data = {
       worked: true
     }
+	setCron(json);
     res.send(data);
   }).catch((error) => {
     const data = {
@@ -160,6 +194,14 @@ app.post("/sendNotification", (req, res) => {
 })
 
 const host = '0.0.0.0';
+
+setCron(w)
+setCronForAll()
+//const subject = `Cherva - Data changed`
+//const body = `Data has changed in cherava.`
+
+
+//sendMail(subject, body,etheral_user, etheral_pass)
 
 app.listen(port, host, () => console.log("Listening on", port));
 
