@@ -51,12 +51,13 @@ function App() {
   }
 
   async function SaveToDatabase() {
+    const c = cron || "* * * * *";
     const workflow = {
       id,
       user: userId,
       data: previewData,
       selector,
-      cron: "0 * * * *",
+      cron: c,
       lastupdated: Date.now(),
       url,
       name,
