@@ -32,10 +32,13 @@ function api(url) {
   })
 }
 
-async function getData(url, selector, _type) {
+async function getData(url, selector, type) {
   const data = await api(url);
   const $ = load(data);
-  return $(selector).text();
+  if (type === "html")
+    return $(selector).html();
+  else
+    return $(selector).text();
 }
 
 import { schedule } from 'node-cron';
@@ -90,7 +93,7 @@ console.log("DB url: ", process.env.DB_URL)
 app.post("/api", async (req, res) => {
   console.log("Got a reqeust with body: ", req.body)
   const json = req.body;
-  const text = await getData(json['url'], json['selector'], "text");
+  const text = await getData(json['url'], json['selector'], json['type']);
   const data = {
     d: text
   }
@@ -104,10 +107,10 @@ app.get('/', (req, res) => {
 app.post("/getData", async (req, res) => {
   const id = req.body.id;
   console.log("Got a reqeust with body: ", req.body);
-  db.any('SELECT * FROM Workflows where "user" = $1', id).then(function(data) {
+  db.any('SELECT * FROM Workflows where "user" = $1', id).then(function (data) {
     console.log(data)
     res.send(data);;
-  }).catch(function(error) {
+  }).catch(function (error) {
     console.log(error)
   });
 });
