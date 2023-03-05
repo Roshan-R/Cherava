@@ -1,8 +1,14 @@
+import { useEffect } from "react";
+
 function Preview(props) {
 
+  useEffect(() => {
+    var wrapper = document.getElementById("preview");
+    wrapper.innerHTML = props.data;
+  })
+
   return (
-    <div className="flex p-3 flex-1 bg-slate-200 rounded-md">
-      {props.data}
+    <div id="preview" className="flex p-3 flex-1 bg-slate-200 rounded-md">
     </div>
   );
 

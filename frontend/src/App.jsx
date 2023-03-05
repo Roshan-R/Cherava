@@ -33,9 +33,10 @@ function App() {
 
   async function handlePreviewClick() {
     setLoading(true)
-    const data = { url, selector }
+    const data = { url, selector, type }
     console.log(data)
-    const res = await fetch("https://cherava.roshanr3.repl.co/api", {
+    console.log(`${import.meta.env.VITE_BACKEND}`)
+    const res = await fetch(`${import.meta.env.VITE_BACKEND}/api`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +64,7 @@ function App() {
       name,
     }
     console.log("workflow: ", workflow)
-    const res = await fetch("https://cherava.roshanr3.repl.co/saveData", {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND}/saveData`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -110,7 +111,7 @@ function App() {
                 defaultValue={selector}
               />
               <Input
-                title="Datatype"
+                title="Datatype (text/html)"
                 placeholer="text"
                 onChange={(e) => setType(e.target.value)}
                 defaultValue="text"
