@@ -17,6 +17,7 @@ function App() {
   const [selector, setSelector] = useState("")
   const [type, setType] = useState("")
   const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
   const [cron, setCron] = useState("")
 
   const [loading, setLoading] = useState(false)
@@ -62,6 +63,7 @@ function App() {
       lastupdated: Date.now(),
       url,
       name,
+      email
     }
     console.log("workflow: ", workflow)
     const res = await fetch(`${import.meta.env.VITE_BACKEND}/saveData`, {
@@ -119,27 +121,33 @@ function App() {
               <Button onClick={handlePreviewClick} text="Preview" isLoading={loading} />
 
             </div>
-
-            {previewData ?
-              <>
-                <div className="my-3 h-1 w-full bg-gray-200"></div>
-                preview of data
-                <Preview data={previewData} />
-                <Button text="Save" onClick={SaveToDatabase} isLoading={false} />
-              </>
-              : <></>
-            }
           </div>
 
 
 
           <div className='mx-4 flex flex-col'>
-            <Input
-              title="Update Interval"
-              placeholer="0 * * * *"
-              onChange={(e) => setCron(e.target.value)}
-              defaultValue={cron}
-            />
+            {previewData ?
+              <>
+
+                <p className='text-lg text-gray-600 font-semibold'> Preview of data scraped</p>
+
+                <Preview data={previewData} />
+                <Input
+                  title="Email for Notifications on Website Updates"
+                  placeholer="foo@bar.com"
+                  onChange={(e) => setEmail(e.target.value)}
+                  defaultValue=""
+                />
+                <Input
+                  title="Update Interval"
+                  placeholer="0 * * * *"
+                  onChange={(e) => setCron(e.target.value)}
+                  defaultValue={cron}
+                />
+                <Button text="Save" onClick={SaveToDatabase} isLoading={false} />
+              </>
+              : <></>
+            }
           </div>
         </div>
       </div >
