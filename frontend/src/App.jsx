@@ -8,6 +8,9 @@ import Preview from './components/Preview'
 import { useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
+import { Cron } from 'react-js-cron'
+import 'react-js-cron/dist/styles.css'
+
 import toast from 'react-hot-toast';
 
 function App() {
@@ -119,7 +122,6 @@ function App() {
                 defaultValue="text"
               />
               <Button onClick={handlePreviewClick} text="Preview" isLoading={loading} />
-
             </div>
           </div>
 
@@ -138,12 +140,9 @@ function App() {
                   onChange={(e) => setEmail(e.target.value)}
                   defaultValue=""
                 />
-                <Input
-                  title="Update Interval"
-                  placeholer="0 * * * *"
-                  onChange={(e) => setCron(e.target.value)}
-                  defaultValue={cron}
-                />
+                <p className='text-lg text-gray-600 font-semibold'>Update Interval</p>
+                <Cron value={cron} setValue={setCron} />
+
                 <Button text="Save" onClick={SaveToDatabase} isLoading={false} />
               </>
               : <></>
