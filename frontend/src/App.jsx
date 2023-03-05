@@ -133,7 +133,7 @@ function App() {
 
                 <Preview data={previewData} />
                 <Input
-                  title="Email for Notifications on Website Updates"
+                  title="Email for Notifications on Website Updates (comma separated for multiple emails)"
                   placeholer="foo@bar.com"
                   onChange={(e) => setEmail(e.target.value)}
                   defaultValue=""
