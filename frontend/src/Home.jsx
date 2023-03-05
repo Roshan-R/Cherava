@@ -16,7 +16,7 @@ function Home(props) {
 
   const fetchProducts = async () => {
     const { data } = await axios.post(
-      "http://localhost:3000/getData/", {
+      "https://EquatorialHeftyAddresses.roshanr3.repl.co/getData", {
       id: userid
     });
     // const p = data;
