@@ -1,1 +1,16 @@
 node_modules/
+hono-backend/.env.local
+hono-backend/bun.lockb
+hono-backend/Dockerfile
+hono-backend/package.json
+hono-backend/README.md
+hono-backend/tsconfig.json
+hono-backend/src/index.ts
+node-backend/.env.local
+node-backend/Dockerfile
+node-backend/index.js
+node-backend/nodemon.json
+node-backend/package.json
+node-backend/pnpm-lock.yaml
+.gitignore
+backend/.env
