@@ -1,5 +1,5 @@
 # The command that is executed when the run button is clicked.
-run = ["npm", "start"]
+run = ["npm", "run", "dev"]
 
 # The default file opened in the editor.
 entrypoint = "backend/server.js"

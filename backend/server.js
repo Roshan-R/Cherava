@@ -115,8 +115,8 @@ function setCron(w) {
 import cors from "cors";
 import express, { json as _json } from "express";
 const app = express();
-// const port = parseInt(process.env.PORT || "8080");
-const port = 8080;
+const port = parseInt(process.env.PORT || "3000");
+// const port = 8080;
 app.use(_json());
 app.use(cors({ origin: '*' }));
 
@@ -152,7 +152,7 @@ app.post("/saveData", async (req, res) => {
   console.log("Got a reqeust with body: ", req.body);
   const json = req.body;
   console.log(json);
-  db.none('INSERT INTO Workflows VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [
+  db.none('INSERT INTO Workflows VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)', [
     json['id'],
     json['user'],
     json['data'],
@@ -161,6 +161,7 @@ app.post("/saveData", async (req, res) => {
     json['lastupdated'],
     json['url'],
     json['name'],
+	json['email']
   ]).then(() => {
     const data = {
       worked: true
