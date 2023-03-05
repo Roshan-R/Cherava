@@ -22,15 +22,17 @@ function App() {
 
   const [loading, setLoading] = useState(false)
   const [previewData, setPreviewData] = useState("")
-  const [userId, setUserId] = useState("")
+  // const [userId, setUserId] = useState("")
 
-  useEffect(() => {
-    const userid = localStorage.getItem('userid');
-    if (userid == null) {
-      localStorage.setItem('userid', uuidv4())
+  const [userId, setUserid] = useState(() => {
+    const u = localStorage.getItem('userid');
+    if (u == null) {
+      const u_id = uuidv4()
+      localStorage.setItem('userid', u_id)
+      return u_id
     }
-    setUserId(userid)
-  }, [])
+    return u
+  });
 
   async function handlePreviewClick() {
     setLoading(true)
@@ -77,9 +79,6 @@ function App() {
     const respJson = await res.json();
     console.log(respJson)
     if (respJson.worked) {
-
-
-      // show toast
       toast.success('Successfully saved to database')
     }
   }
