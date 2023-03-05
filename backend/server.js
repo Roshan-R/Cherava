@@ -51,13 +51,14 @@ async function saveChangetoDb(w, new_data) {
   db.none('UPDATE Workflows set data = $1, lastupdated = $2 where id = $3', [new_data, Date.now(), w.id,]).then(() => {
     console.log("Successfully changed data")
 
+    const email = w.email;
     const subject = `Cherava: Content update on workflow -  ${w.name}`
     const body = `Your workflow ${w.name} had the following update received
  	
   	${w.data}
  	`
 
-    sendMail(subject, body, etheral_user, etheral_pass)
+    sendMail(email, subject, body)
   }).catch((error) => {
     console.log("Error happedn dude", error)
   });
