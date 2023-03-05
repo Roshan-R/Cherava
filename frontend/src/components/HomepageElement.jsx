@@ -52,7 +52,20 @@ function HomepageElement(props) {
             </div>
           </div>
         </div>
-        <div className="my-3 text-2xl font-semibold">{props.data}</div>
+        <div
+          className="my-3 text-2xl font-semibold"
+          style={{
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 4,
+            lineHeight: "1.5rem",
+            maxHeight: "calc(1.5rem * 4)",
+          }}
+        >
+          {props.data}
+        </div>
       </div>
       <div className="absolute  rounded-lg bg-black pt-4 pb-1 px-3 text-sm text-green-400 bottom-0 right-3 ">
         {props.time}
