@@ -35,7 +35,7 @@ function App() {
     setLoading(true)
     const data = { url, selector }
     console.log(data)
-    const res = await fetch("http://localhost:3000/api/", {
+    const res = await fetch("https://EquatorialHeftyAddresses.roshanr3.repl.co/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +62,7 @@ function App() {
       name,
     }
     console.log("workflow: ", workflow)
-    const res = await fetch("http://localhost:3000/saveData/", {
+    const res = await fetch("https://EquatorialHeftyAddresses.roshanr3.repl.co/saveData", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
