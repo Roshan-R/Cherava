@@ -152,7 +152,7 @@ app.post("/saveData", async (req, res) => {
   console.log("Got a reqeust with body: ", req.body);
   const json = req.body;
   console.log(json);
-  db.none('INSERT INTO Workflows VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [
+  db.none('INSERT INTO Workflows VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)', [
     json['id'],
     json['user'],
     json['data'],
@@ -161,6 +161,7 @@ app.post("/saveData", async (req, res) => {
     json['lastupdated'],
     json['url'],
     json['name'],
+    json['email'],
   ]).then(() => {
     const data = {
       worked: true
