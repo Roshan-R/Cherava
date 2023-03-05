@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config()
+import { sendMail } from './services/mail_service.js';
 
 import { load } from 'cheerio';
 
@@ -141,6 +142,22 @@ app.post("/saveData", async (req, res) => {
     console.log("Error happedn dude", error)
   });
 });
+
+app.post("/sendNotification", (req, res) => {
+  const json = req.body
+  const email = json.email
+  const subject = json.subject
+  const body = json.body
+
+  sendMail(email, subject, body)
+    .then(result => {
+      console.log("Sent Mail")
+      res.send(result.body)
+    })
+    .catch(error => {
+      console.log("Error: " + error)
+    })
+})
 
 const host = '0.0.0.0';
 
