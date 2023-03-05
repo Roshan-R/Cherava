@@ -5,6 +5,7 @@ import getDbDataFromDataId from "./helpers/Connection";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 
 import timeSince from "./helpers/Time";
 import Masonry from "react-masonry-css";
@@ -12,9 +13,17 @@ import Masonry from "react-masonry-css";
 import "./Home.css";
 
 function Home(props) {
-  const [userid, setUserid] = useState(() => {
-    return localStorage.getItem("userid");
+
+  const [userId, setUserid] = useState(() => {
+    const u = localStorage.getItem('userid');
+    if (u == null) {
+      const u_id = uuidv4()
+      localStorage.setItem('userid', u_id)
+      return u_id
+    }
+    return u
   });
+
   const [workflows, setWorkflows] = useState([]);
 
   const breakpointColumnsObj = {
@@ -24,7 +33,7 @@ function Home(props) {
   const fetchProducts = async () => {
     const { data } = await axios.post(
       "https://cherava.roshanr3.repl.co/getData", {
-      id: userid
+      id: userId
     });
     // const p = data;
     // p.forEach(element => {
