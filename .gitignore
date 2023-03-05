@@ -14,3 +14,5 @@ node-backend/package.json
 node-backend/pnpm-lock.yaml
 .gitignore
 backend/.env
+*/.env
+*/package-lock.json
