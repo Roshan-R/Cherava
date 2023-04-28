@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config()
-import { sendMail } from './services/mail_service.js';
+import { sendMail } from './backend/services/mail_service.js';
 
 import { load } from 'cheerio';
 
