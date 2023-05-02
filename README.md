@@ -35,6 +35,20 @@ Its purpose is to create alert systems for various tasks such as monitoring univ
 
 [![](https://img.youtube.com/vi/Eqarz4dFGnU/0.jpg)](https://youtu.be/Eqarz4dFGnU)
 
+## Built by
+
+<table>
+  <tr>
+
+<td align="center"><a href="https://github.com/Roshan-R"><img src="https://avatars.githubusercontent.com/u/43182697?v=4" width="180px;" alt=""/><br /><sub><b>Roshan R Chandar</b></sub></a><br />
+
+  <td align="center"><a href="https://github.com/AJAYK-01"><img src="https://avatars.githubusercontent.com/u/55079486?v=4" width="180px;" alt=""/><br /><sub><b>Ajay Krishna K V</b></sub></a><br />
+
+  <td align="center"><a href="https://github.com/GameGodS3"><img src="https://avatars.githubusercontent.com/u/54617167?v=4" width="180px;" alt=""/><br /><sub><b>Sudev Suresh Sreedevi</b></sub></a><br />
+
+</tr>
+</table>
+
 ## To run locally
 
 Clone the Repo
