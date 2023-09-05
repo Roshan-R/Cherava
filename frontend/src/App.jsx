@@ -42,7 +42,7 @@ function App() {
         const data = { url, selector, type }
         console.log(data)
         console.log(`${import.meta.env.VITE_BACKEND}`)
-        const res = await fetch(`${import.meta.env.VITE_BACKEND}/api`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND}/api/scrape`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
