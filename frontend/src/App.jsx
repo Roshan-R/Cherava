@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import Input from './components/Input.jsx'
 import Navbar from './components/Navbar.jsx'
 import Button from './components/Button.jsx'
 import './App.css'
 import Preview from './components/Preview'
-import { useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import { Cron } from 'react-js-cron'
@@ -25,24 +23,14 @@ function App() {
 
     const [loading, setLoading] = useState(false)
     const [previewData, setPreviewData] = useState("")
-    // const [userId, setUserId] = useState("")
 
-    const [userId, setUserid] = useState(() => {
-        const u = localStorage.getItem('userid');
-        if (u == null) {
-            const u_id = uuidv4()
-            localStorage.setItem('userid', u_id)
-            return u_id
-        }
-        return u
-    });
 
     async function handlePreviewClick() {
         setLoading(true)
         const data = { url, selector, type }
         console.log(data)
         console.log(`${import.meta.env.VITE_BACKEND}`)
-        const res = await fetch(`${import.meta.env.VITE_BACKEND}/api/scrape`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND}/api/v1/scrape`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -72,14 +60,13 @@ function App() {
             email
         }
         console.log("workflow: ", workflow)
-        const res = await fetch(`${import.meta.env.VITE_BACKEND}/saveData`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND}/api/v1/new`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(workflow)
         })
-
         const respJson = await res.json();
         console.log(respJson)
         if (respJson.worked) {
@@ -129,9 +116,7 @@ function App() {
 
                     <div className='mx-4 flex flex-col'>
                         {previewData ?
-                            <>
-
-                                <p className='text-lg text-gray-600 font-semibold'> Preview of data scraped</p>
+                            <><p className='text-lg text-gray-600 font-semibold'> Preview of data scraped</p>
 
                                 <Preview data={previewData} />
                                 <Input
